@@ -1,0 +1,180 @@
+{
+  "info": {
+    "name": "Delivery Tracking API",
+    "description": "API endpoints for delivery tracking system",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Ping API",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/ping",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "ping"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create Package - Valid Input",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"laptop\",\n  \"prod_id\": \"PROD_12345\",\n  \"customer\": {\n    \"id\": \"customer_001\",\n    \"name\": \"John Doe\",\n    \"email\": \"john.doe@example.com\",\n    \"address\": {\n      \"street\": \"Rothschild\",\n      \"number\": \"15\",\n      \"city\": \"Tel Aviv\"\n    }\n  },\n  \"start_date\": 1746907533,\n  \"eta\": 1747771531,\n  \"status\": \"packed\",\n  \"company_id\": 1\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/packages",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "packages"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create Package - Invalid Input",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"\",\n  \"prod_id\": \"PROD_12345\",\n  \"customer\": {\n    \"name\": \"John Doe\",\n    \"email\": \"invalid-email\",\n    \"address\": {\n      \"street\": \"\"\n    }\n  },\n  \"company_id\": 15\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/packages",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "packages"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get All Packages",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/packages",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "packages"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Packages by Company",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/packages?company_id=1",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "packages"],
+          "query": [
+            {
+              "key": "company_id",
+              "value": "1"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Package by ID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/packages/PACK_ID1",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "packages", "PACK_ID1"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Update Package",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"eta\": 1747800000,\n  \"status\": \"shipped\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/packages/PACK_ID1",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "packages", "PACK_ID1"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Add Location to Package",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"lat\": 32.0853,\n  \"lon\": 34.7818\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/packages/PACK_ID1/location",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "packages", "PACK_ID1", "location"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Search Location",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/search-location?q=Tel Aviv",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "search-location"],
+          "query": [
+            {
+              "key": "q",
+              "value": "Tel Aviv"
+            }
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3001"
+    }
+  ]
+}
