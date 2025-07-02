@@ -161,28 +161,54 @@ export async function addLocationToPackage(req, res) {
 
 /**
  * Get all packages or packages for specific company
- * GET /api/packages/companyId
+ * GET /api/packages?company_id=<ID>
  */
 export async function getPackages(req, res) {
+
   try {
-    const companyId = req.params.companyId;
+    
+    const { company_id } = req.query;
 
     // Validates companyId
-    if (!companyId || !validator.isMongoId(companyId)) {
+    if (!company_id || !validator.isMongoId(company_id)) {
       return res.status(400).json({ error: 'Invalid company ID provided.' });
     }
 
     // Checks if the company exists
-    const companyExists = await Companies.findById(companyId);
+    const companyExists = await Companies.findById(company_id);
     if (!companyExists) {
       return res.status(404).json({ error: 'Company not found (0 exist in database).' });
     }
 
     // Query for all packages for company
-    const packages = await Packages.find({ company_id: companyId })
+    const packages = await Packages.find({ company_id: company_id })
       .populate('company_id', 'company_name company_website')
       .populate('customer_id', 'customer_name customer_email customer_address')
       .sort({ creation_date: -1 }); // Newest first
+
+    // Sends response with the packages
+    res.json({
+      packages
+    });
+
+  } catch (error) {
+    
+    console.error('Error getting packages:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+}
+
+
+/**
+ * Get all packages in the system
+ * GET /api/packages
+ */
+export async function getAllPackages(req, res) {
+
+  try {
+
+    // Query for all packages
+    const packages = await Packages.find({});
 
     // Sends response with the packages
     res.json({

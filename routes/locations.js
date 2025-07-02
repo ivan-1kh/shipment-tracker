@@ -41,21 +41,21 @@ export async function searchLocation(req, res) {
 
 /**
  * Get route map for package
- * GET /api/getroute/:pkgid
+ * GET /api/getroute?package_id=<ID>
  */
 export async function getRoute(req, res) {
 
   try {
 
-    const packageId = req.params.pkgid;
+    const { package_id } = req.query;
 
     // Validate package ID
-    if (!validator.isMongoId(packageId)) {
+    if (!validator.isMongoId(package_id)) {
       return res.status(400).json({ error: 'Invalid package ID' });
     }
 
     // Fetch package from MongoDB
-    const pkg = await Packages.findById(packageId)
+    const pkg = await Packages.findById(package_id)
       .populate('customer_id', 'customer_address');
 
     if (!pkg) {

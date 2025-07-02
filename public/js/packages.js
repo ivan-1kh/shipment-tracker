@@ -59,7 +59,7 @@ function setupFormValidations() {
 function loadPackages() {
 
     $.ajax({
-        url: `/api/packages/${currentCompanyId}`,
+        url: `/api/packages?company_id=${currentCompanyId}`,
         method: 'GET',
         success: function (packages) {
             displayPackages(packages.packages);
@@ -375,7 +375,7 @@ function showPackageRoute(packageId) {
     $('#mapModal').modal('show');
 
     $.ajax({
-        url: `/api/getroute/${packageId}`,
+        url: `/api/get-route?package_id=${packageId}`,
         method: 'GET',
         xhrFields: {
             responseType: 'arraybuffer'
